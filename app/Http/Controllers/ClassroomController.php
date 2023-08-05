@@ -46,6 +46,8 @@ class ClassroomController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * 
+     * @param string $id
      */
     public function destroy(string $id)
     {
@@ -60,5 +62,11 @@ class ClassroomController extends Controller
     public function search (string $name)
     {
         return Classroom::where('name', 'like', "%$name%")->get();
+    }
+
+    public function getUsers (Request $request, string $id)
+    {
+        $classroom = Classroom::find($id);
+        return $classroom->users;
     }
 }

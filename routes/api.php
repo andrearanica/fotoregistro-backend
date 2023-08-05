@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ClassroomController;
@@ -16,16 +15,16 @@ use App\Http\Controllers\ClassroomController;
 |
 */
 
-/* Route::get('/classrooms', [ClassroomController::class, 'index']);
-
-Route::get('classrooms/{id}', [ClassroomController::class, 'search']);
-
-Route::post('/classrooms', [ClassroomController::class, 'store']); */
-
 Route::group(['middleware' => ['jwt.verify']], function () {
     Route::resource('classrooms', ClassroomController::class);
-Route::get('classrooms/search/{name}', [ClassroomController::class, 'search']);
+    Route::get('classrooms/search/{name}', [ClassroomController::class, 'search']);
+    Route::get('classrooms/{id}/users', [ClassroomController::class, 'getUsers']);
+    Route::get('users/{id}/classroom', [UserController::class, 'getClassroom']);
+    Route::post('classroom/subscribe/{classroom_id}', [UserController::class, 'subscribe']);
+    Route::put('classroom/unsubscribe', [UserController::class, 'unsubscribe']);
 });
 
 Route::post('register', [UserController::class, 'register']);
 Route::post('login', [UserController::class, 'authenticate']);
+Route::get('auth-info', [UserController::class, 'getAuthenticatedUser']);
+Route::put('users', [UserController::class, 'update']);
