@@ -64,9 +64,11 @@ class ClassroomController extends Controller
         return Classroom::where('name', 'like', "%$name%")->get();
     }
 
-    public function getUsers (Request $request, string $id)
+    public function users (Request $request, string $id)
     {
-        $classroom = Classroom::find($id);
+        if (!$classroom = Classroom::find($id)) {
+            return response()->json(['message' => 'Class not found'], 404);
+        }
         return $classroom->users;
     }
 }

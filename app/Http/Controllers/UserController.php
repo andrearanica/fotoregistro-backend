@@ -115,9 +115,13 @@ class UserController extends Controller
         ]);
     }
 
-    public function classrooms (Request $request)
+    public function classrooms (Request $request, string $id)
     {
         $user = JWTAuth::parseToken()->authenticate();
-        return $user->classrooms;
+        if ($user == User::find($id)) {
+            return $user->classrooms;
+        } else {
+            return response()->json(['message' => 'Wrong user id'], 401);
+        }
     }
 }
