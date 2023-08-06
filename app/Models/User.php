@@ -3,12 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -50,9 +49,9 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         'password' => 'hashed',
     ];
 
-    public function classroom(): BelongsTo
+    public function classroom(): BelongsToMany
     {
-        return $this->belongsTo(Classroom::class);
+        return $this->belongsToMany(Classroom::class);
     }
 
     /**
@@ -65,5 +64,10 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 
     public function getJWTCustomClaims () {
         return [];
+    }
+
+    public function classrooms ()
+    {
+        return $this->belongsToMany(Classroom::class);
     }
 }

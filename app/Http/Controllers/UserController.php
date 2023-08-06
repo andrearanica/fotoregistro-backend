@@ -86,12 +86,6 @@ class UserController extends Controller
         return $user;
     }
 
-    public function getClassroom (Request $request, string $id) 
-    {
-        $user = User::find($id);
-        return $user->classroom;
-    }
-
     /**
      * Subscribe user to classroom
      * 
@@ -119,5 +113,11 @@ class UserController extends Controller
         return $user->update([
             'classroom_id' => null
         ]);
+    }
+
+    public function classrooms (Request $request)
+    {
+        $user = JWTAuth::parseToken()->authenticate();
+        return $user->classrooms;
     }
 }
