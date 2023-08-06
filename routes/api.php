@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClassroomUserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ClassroomController;
@@ -22,6 +23,8 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('users/{id}/classroom', [UserController::class, 'classrooms']);
     Route::post('classroom/subscribe/{classroom_id}', [UserController::class, 'subscribe']);
     Route::put('classroom/unsubscribe', [UserController::class, 'unsubscribe']);
+    Route::post('users/{user_id}/classrooms/{classroom_id}', [ClassroomUserController::class, 'store']);
+    Route::get('users/{user_id}/classrooms/{classroom_id}', [ClassroomUSerController::class, 'show']);
 });
 
 Route::post('register', [UserController::class, 'register']);
