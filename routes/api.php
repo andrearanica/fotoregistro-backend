@@ -24,6 +24,7 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::post('classroom/subscribe/{classroom_id}', [UserController::class, 'subscribe']);
     Route::put('classroom/unsubscribe', [UserController::class, 'unsubscribe']);
     Route::post('users/{user_id}/classrooms/{classroom_id}', [ClassroomUserController::class, 'store']);
+    Route::put('users/{user_id}/classrooms/{classroom_id}', [ClassroomUserController::class, 'edit']);
     Route::get('users/{user_id}/classrooms/{classroom_id}', [ClassroomUSerController::class, 'show']);
 });
 
