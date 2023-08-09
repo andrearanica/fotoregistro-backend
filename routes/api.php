@@ -24,11 +24,12 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::post('classroom/subscribe/{classroom_id}', [UserController::class, 'subscribe']);
     Route::put('classroom/unsubscribe', [UserController::class, 'unsubscribe']);
     Route::post('users/{user_id}/classrooms/{classroom_id}', [ClassroomUserController::class, 'store']);
-    Route::put('users/{user_id}/classrooms/{classroom_id}', [ClassroomUserController::class, 'edit']);
+    Route::put('users/{user_id}/classrooms/{classroom_id}', [ClassroomUserController::class, 'update']);
     Route::get('users/{user_id}/classrooms/{classroom_id}', [ClassroomUSerController::class, 'show']);
+    Route::delete('users/{user_id}/classrooms/{classroom_id}', [ClassroomUserController::class, 'destroy']);
+    Route::get('auth-info', [UserController::class, 'getAuthenticatedUser']);
+    Route::put('users', [UserController::class, 'update']);
 });
 
 Route::post('register', [UserController::class, 'register']);
 Route::post('login', [UserController::class, 'authenticate']);
-Route::get('auth-info', [UserController::class, 'getAuthenticatedUser']);
-Route::put('users', [UserController::class, 'update']);
