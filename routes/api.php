@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ClassroomUserController;
 use App\Http\Controllers\ImageUploadController;
+use App\Http\Middleware\VerifyUploader;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ClassroomController;
@@ -32,7 +33,7 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::put('users', [UserController::class, 'update']);
 });
 
-Route::post('users/{id}/photo', [ImageUploadController::class, 'storeImage']);
+Route::post('users/{id}/photo', [ImageUploadController::class, 'storeImage'])->middleware(['jwt.verify','uploader.verify:id']);
 Route::get('users/{id}/photo', [ImageUploadController::class, 'getImage']);
 
 Route::post('register', [UserController::class, 'register']);
