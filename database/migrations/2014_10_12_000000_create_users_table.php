@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->integer('classroom_id')->nullable();
+            $table->boolean('uploaded_photo')->default(false);
             $table->timestamps();
         });
     }

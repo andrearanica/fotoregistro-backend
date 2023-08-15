@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClassroomUserController;
+use App\Http\Controllers\ImageUploadController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ClassroomController;
@@ -30,6 +31,9 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('auth-info', [UserController::class, 'getAuthenticatedUser']);
     Route::put('users', [UserController::class, 'update']);
 });
+
+Route::post('users/{id}/photo', [ImageUploadController::class, 'storeImage']);
+Route::get('users/{id}/photo', [ImageUploadController::class, 'getImage']);
 
 Route::post('register', [UserController::class, 'register']);
 Route::post('login', [UserController::class, 'authenticate']);
