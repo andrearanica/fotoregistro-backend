@@ -70,6 +70,8 @@ class ClassroomUserController extends Controller
             return response()->json(['message' => 'Subscription not found'], 404);
         }
         $id = $classroomUser->first()->id;
-        ClassroomUser::destroy($id);
+        if (ClassroomUser::destroy($id)) {
+            return response()->json(['message' => 'subscription deleted'], 200);
+        }
     }
 }

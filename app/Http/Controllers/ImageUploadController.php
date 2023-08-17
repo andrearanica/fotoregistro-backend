@@ -33,6 +33,22 @@ class ImageUploadController extends Controller
     public function getImage (Request $request, string $id)
     {
         $user = User::find($id);
-        return response()->json('images/' . $user->photo);
+        if ($user->photo) {
+            return response()->json('images/' . $user->photo);
+        }
+        return response()->json(['message' => 'user does not have a photo']);
+    }
+
+    public function delete (Request $request, string $id) {
+        if ($user = User::find($id)) {
+            if (!$user->photo) {
+                return response()->json(['message' => 'user does not have a photo']);
+            }
+            unlink(public_path('images/' . $user->photo));
+            $user->update(['photo' => null]);
+            return response()->json(['message' => 'photo deleted']);
+        } else {
+            return response()->json(['message' => 'user not found']);
+        }
     }
 }

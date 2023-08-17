@@ -53,12 +53,45 @@ class UserController extends Controller
     }
 
     /**
+     * Get user info from JWT token
+     */
+    public function ConvertJWT (Request $request)
+    {
+        try {
+            if (!$user = JWTAuth::parseToken()->authenticate()) {
+                return response()->json(['error' => 'User not found'], 404);
+            }
+        } catch (TokenExpiredException $e) {
+            return response()->json(['error' => 'Token expired'], 401);
+        } catch (TokenInvalidException $e) {
+            return response()->json(['error' => 'Token not valid'], 401);
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'Token not found'], 401);
+        }
+        return response()->json(compact('user'));
+    }
+
+    /**
      * Return authenticated user's info
      * 
      */
     public function show ($id) 
     {
         return response()->json(User::find($id));
+    }
+
+    /**
+     * Return user's basic info
+     */
+    public function info (Request $request, string $id) 
+    {
+        $user = User::find($id);
+        return response()->json([
+            'name' => $user->name,
+            'surname' => $user->surname, 
+            'email' => $user->email,
+            'photo' => $user->photo
+        ]);
     }
 
     /**
