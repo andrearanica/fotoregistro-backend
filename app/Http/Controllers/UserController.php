@@ -56,20 +56,9 @@ class UserController extends Controller
      * Return authenticated user's info
      * 
      */
-    public function getAuthenticatedUser () 
+    public function show ($id) 
     {
-        try {
-            if (!$user = JWTAuth::parseToken()->authenticate()) {
-                return response()->json(['error' => 'User not found'], 404);
-            }
-        } catch (TokenExpiredException $e) {
-            return response()->json(['error' => 'Token expired'], 401);
-        } catch (TokenInvalidException $e) {
-            return response()->json(['error' => 'Token not valid'], 401);
-        } catch (JWTException $e) {
-            return response()->json(['error' => 'Token not found'], 401);
-        }
-        return response()->json(compact('user'));
+        return response()->json(User::find($id));
     }
 
     /**
@@ -77,11 +66,9 @@ class UserController extends Controller
      * 
      * @param Request $request, string $id
      */
-    public function update (Request $request)
+    public function update (Request $request, string $id)
     {
-        if (!$user = JWTAuth::parseToken()->authenticate()) {
-            return response()->json(['error' => 'User not found'], 404);
-        }
+        $user = User::find($id);
         $user->update($request->all());
         return $user;
     }

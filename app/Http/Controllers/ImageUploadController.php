@@ -9,6 +9,9 @@ use Storage;
 
 class ImageUploadController extends Controller
 {
+    /**
+     * Store the uploaded image
+     */
     public function storeImage (Request $request, string $id)
     {
         $request->validate([
@@ -24,9 +27,12 @@ class ImageUploadController extends Controller
         return response()->json(['message' => 'image uploaded'], 201);
     }
 
+    /**
+     * Return the path of the user's photo from public
+     */
     public function getImage (Request $request, string $id)
     {
         $user = User::find($id);
-        return response()->json(public_path('images/' . $user->photo));
+        return response()->json('images/' . $user->photo);
     }
 }
