@@ -29,6 +29,9 @@ class ClassroomUserController extends Controller
      */
     public function store(Request $request, string $user_id, string $classroom_id)
     {
+        if (ClassroomUser::where('user_id', '=', $user_id)->where('classroom_id', '=', $classroom_id)) {
+            return response()->json(['message' => 'Subscription already stored']);
+        }
         return ClassroomUser::create([
             'user_id' => $user_id,
             'classroom_id' => $classroom_id,
