@@ -68,7 +68,7 @@ class UserController extends Controller
         } catch (JWTException $e) {
             return response()->json(['error' => 'Token not found'], 401);
         }
-        return response()->json(compact('user'));
+        return response()->json($user);
     }
 
     /**

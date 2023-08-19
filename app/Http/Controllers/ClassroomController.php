@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Classroom;
 use Illuminate\Http\Request;
+use App\Models\ClassroomUser;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ClassroomController extends Controller
 {
@@ -23,7 +25,14 @@ class ClassroomController extends Controller
         $request->validate([
             'name' => 'required'
         ]);
-        return Classroom::create($request->all());
+        $user = JWTAuth::parseToken()->authenticate();
+        $classroom = Classroom::create($request->all()); 
+        ClassroomUser::create([
+            'user_id' => $user->id,
+            'classroom_id' => $classroom->id,
+            'role' => 'admin'
+        ]);
+        return $classroom;
     }
 
     /**
