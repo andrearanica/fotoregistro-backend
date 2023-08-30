@@ -29,7 +29,7 @@ class ClassroomUserController extends Controller
      */
     public function store(Request $request, string $user_id, string $classroom_id)
     {
-        if (ClassroomUser::where('user_id', '=', $user_id)->where('classroom_id', '=', $classroom_id)) {
+        if (ClassroomUser::where('user_id', '=', $user_id)->where('classroom_id', '=', $classroom_id)->first()) {
             return response()->json(['message' => 'Subscription already stored']);
         }
         return ClassroomUser::create([
@@ -60,7 +60,17 @@ class ClassroomUserController extends Controller
      */
     public function update(Request $request, string $user_id, string $classroom_id)
     {
-        $classroomUser = Classroomuser::where('user_id', '=', $user_id)->first();
+        $user = JWTAuth::parseToken()->authenticate();
+        $classroomUserAdmin = ClassroomUser::where('user_id', '=', $user->id)->where('classroom_id', '=', $classroom_id)->first();
+        if ($classroomUserAdmin->user_id == $user_id) {
+            return response()->json(['message' => 'Not authorized']);
+        }
+
+        $request->validate([
+            'role' => 'required|in:admin,student'
+        ]);
+
+        $classroomUser = Classroomuser::where('user_id', '=', $user_id)->where('classroom_id', '=', $classroom_id)->first();
         $classroomUser->update(['role' => $request['role']]);
         return $classroomUser;
     }
