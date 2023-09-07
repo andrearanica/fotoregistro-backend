@@ -19,6 +19,10 @@ class UserController extends Controller
      */
     public function authenticate (Request $request)
     {
+        $request->validate([
+            'email' => 'required|string',
+            'password' => 'required|string',
+        ]);
         $credentials = $request->only('email', 'password');
 
         try {
@@ -101,6 +105,10 @@ class UserController extends Controller
      */
     public function update (Request $request, string $id)
     {
+        $request->validate([
+            'name' => 'required|string',
+            'surname' => 'required|string'
+        ]);
         $user = User::find($id);
         $user->update($request->all());
         return $user;
